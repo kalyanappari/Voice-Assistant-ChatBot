@@ -9,10 +9,9 @@ from dotenv import load_dotenv
 
 ffmpeg_path = "ffmpeg"  # Use system-installed ffmpeg
 
-# Load environment variables
-load_dotenv()
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-MODEL_NAME = os.getenv("MODEL_NAME", "llama-3-8b-instruct")
+# Load secrets directly from environment (GitHub Secrets or Docker ENV)
+GROQ_API_KEY = os.environ["groq_api_key"]
+MODEL_NAME = "llama-3-8b-instruct"
 
 # Initialize models
 whisper_model = None
@@ -111,4 +110,5 @@ def synthesize_speech(text, output_path="audio/response.wav"):
     except Exception as e:
         print("TTS error:", e)
         return ""
+
 
