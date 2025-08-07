@@ -1,20 +1,32 @@
-# Base Python image
+# Use official Python image
 FROM python:3.10-slim
 
-# Install FFmpeg
-RUN apt-get update && apt-get install -y ffmpeg && apt-get clean
-
-# Set working directory
+# Set working directory inside container
 WORKDIR /app
 
-# Copy backend code
-COPY . /app
+# Install ffmpeg
+RUN apt-get update && \
+    apt-get install -y ffmpeg git && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy backend and frontend folders
+COPY ./backend /app/backend
+COPY ./frontend /app/frontend
 
-# Expose port (Flask default)
+# Set environment variables directly (or use GitHub secrets)
+ENV GROQ_API_KEY=${groq_api_key}
+ENV MODEL_NAME=llama-3-8b-instruct
+
+# Install Python dependencies
+COPY backend/requirements.txt .
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+# Set the working directory to backend
+WORKDIR /app/backend
+
+# Expose the port Flask will run on
 EXPOSE 5000
 
-# Run the app
+# Run the Flask app
 CMD ["python", "app.py"]
