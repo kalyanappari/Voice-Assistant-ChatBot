@@ -1,0 +1,7 @@
+Flask
+openai-whisper
+coqui-tts
+requests
+python-dotenv
+torch
+torchaudio
