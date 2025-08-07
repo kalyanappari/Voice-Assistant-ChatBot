@@ -7,9 +7,7 @@ import torch
 import requests
 from dotenv import load_dotenv
 
-# Set your system-installed FFmpeg path
-FFMPEG_BIN = r"C:\ffmpeg\ffmpeg-7.1.1-essentials_build\bin"
-os.environ["PATH"] += os.pathsep + FFMPEG_BIN
+ffmpeg_path = "ffmpeg"  # Use system-installed ffmpeg
 
 # Load environment variables
 load_dotenv()
@@ -40,7 +38,7 @@ initialize_models()
 def convert_webm_to_mp3(webm_path, mp3_path):
     try:
         command = [
-            "ffmpeg", "-y",
+            ffmpeg_path, "-y",
             "-i", webm_path,
             "-vn",
             "-ar", "16000",
@@ -113,3 +111,4 @@ def synthesize_speech(text, output_path="audio/response.wav"):
     except Exception as e:
         print("TTS error:", e)
         return ""
+
